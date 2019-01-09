@@ -6,9 +6,10 @@ Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScrip
 
 ##### Uwagi ogólne
 - nie należy korzystać z żadnych zewnętrznych bibliotek (wyjątkiem, lecz nie wymogiem, jest Bootstrap)
+- nie należy korzystać z żadnych frameworków
 - mile widziane użycie TypeScript
 - odpowiedzi prosimy przesyłać w formie linku do repozytorium
-- nie należy korzystać z żadnych frameworków
+
 
 ##### Wytyczne
 1)    Gra rozpoczyna się od wciśnięcia przycisku ”Start”
