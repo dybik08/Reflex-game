@@ -1,8 +1,14 @@
-# zadanie rekrutacyjne - JavaScript
+## Zadanie rekrutacyjne - JavaScript
 
 Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScript.
 
-Zadanie polega na stworzeniu  w JS gry „Reflex” (rys poglądowy poniżej)
+##Zadanie polega na stworzeniu  w JS gry „Reflex” (rys poglądowy poniżej)
+
+# Uwagi ogólne
+- nie należy korzystać z żadnych zewnętrznych bibliotek (wyjątkiem, lecz nie wymogiem, jest Bootstrap)
+- mile widziane użycie TypeScript
+- odpowiedzi prosimy przesyłać w formie linku do repozytorium
+
 Wytyczne
 1)    Gra rozpoczyna się od wciśnięcia przycisku ”Start”
 2)    Rozgrywka trwa 60 sekund lub straty ostatniego życia (gracz ma trzy  „życia”)
