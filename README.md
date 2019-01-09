@@ -8,10 +8,11 @@ Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScrip
 - nie należy korzystać z żadnych zewnętrznych bibliotek (wyjątkiem, lecz nie wymogiem, jest Bootstrap)
 - mile widziane użycie TypeScript
 - odpowiedzi prosimy przesyłać w formie linku do repozytorium
+- nie należy korzystać z żadnych frameworków
 
 ##### Wytyczne
 1)    Gra rozpoczyna się od wciśnięcia przycisku ”Start”
-2)    Rozgrywka trwa 60 sekund lub straty ostatniego życia (gracz ma trzy  „życia”)
+2)    Rozgrywka trwa 60 sekund lub do straty ostatniego życia (gracz ma trzy  „życia”)
 3)    Czas widoczny w prawym górnym rogu
 4)    Na środku gry wyświetlone są kwadraty(ilość podawana z parametru)
 5)    Co 2-3 sekundy losowo wybrany kwadrat zapala się na zielono
