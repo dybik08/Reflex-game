@@ -1,6 +1,6 @@
 # Zadanie rekrutacyjne - JavaScript
 
-Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScript.
+Zadanie rekrutacyjne dla osób aplikujących na stanowisko Młodszy Programista JavaScript.
 
 ### Zadanie polega na stworzeniu  w JS gry „Reflex”
 
