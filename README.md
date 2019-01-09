@@ -2,14 +2,14 @@
 
 Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScript.
 
-###Zadanie polega na stworzeniu  w JS gry „Reflex” (rys poglądowy poniżej)
+### Zadanie polega na stworzeniu  w JS gry „Reflex”
 
 ##### Uwagi ogólne
 - nie należy korzystać z żadnych zewnętrznych bibliotek (wyjątkiem, lecz nie wymogiem, jest Bootstrap)
 - mile widziane użycie TypeScript
 - odpowiedzi prosimy przesyłać w formie linku do repozytorium
 
-#####cWytyczne
+##### Wytyczne
 1)    Gra rozpoczyna się od wciśnięcia przycisku ”Start”
 2)    Rozgrywka trwa 60 sekund lub straty ostatniego życia (gracz ma trzy  „życia”)
 3)    Czas widoczny w prawym górnym rogu
@@ -20,4 +20,5 @@ Zadanie rekrutacyjne dla osób aplikujących na stanowisko Programista JavaScrip
 8)    Gracz traci życie jeśli w trafi w inny kwadrat lub jeśli podświetlenie zielonego kwadratu zniknie po  0,8 sekundy. Pojawia się alert „straciłeś życie”
 9)    Grę można zresetować  - Wyzerowany zostaje licznik czasu  i punktów a licznik „życia” wraca do stanu początkowego (np. 3)
 
+##### Rysunek poglądowy
 ![](./img/makieta_rekrutacja.png)
