@@ -14,4 +14,4 @@ Wytyczne
 8)    Gracz traci życie jeśli w trafi w inny kwadrat lub jeśli podświetlenie zielonego kwadratu zniknie po  0,8 sekundy. Pojawia się alert „straciłeś życie”
 9)    Grę można zresetować  - Wyzerowany zostaje licznik czasu  i punktów a licznik „życia” wraca do stanu początkowego (np. 3)
 
-![](./img/makieta_rekrutacja.jpg)
+![](./img/makieta_rekrutacja.png)
