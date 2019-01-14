@@ -29,20 +29,26 @@ Zadanie rekrutacyjne dla osób aplikujących na stanowisko Młodszy Programista 
 
 Opcjonalnie możesz skorzystać z przygotowanego przez nas projektu webpackowego, który znajduje się w bieżącym repozytorium (nie jest to jednak warunek konieczny). Poniżej znajdziesz instrukcję korzystania z tego projektu.
 
-##### Installation
+##### Utworzenie repozytorium
 
-Install dependencies: `yarn install` or `npm install`.
+1. Stwórz nowy projekt na swoim GitHubie, nie dodając do niego żadnych plików.
 
-##### Development
+2. Skopiuj [zawartość niniejszego repozytorium](https://gitlab.gwo.pl/recruitment/zadanie-rekrutacyjne---javascript/-/archive/master/zadanie-rekrutacyjne---javascript-master.zip) i rozpakuj pliki.
 
-Run `yarn start` or `npm start` to start a development server at [http://localhost:9000](http://localhost:9000).
+3. W katalogu z rozpakowanymi plikami zainicjalizuj nowy projekt git: `git init`.
 
-The entry file is located in `src/index.ts` but if you prefer to use plain JavaScript you can change its name to `src/index.js` instead.
+4. Dodaj adres zdalnego repozytorium, utworzonego w punkcie pierwszym: `git remote add origin https://github.com/<nazwa-użytkownika>/<nazwa-repozytorium>.git`.
 
-All static files from `src/static` folder will be served at [http://localhost:9000](http://localhost:9000).
+##### Instalacja
 
-Feel free to modify any configuration details in `tsconfig.json` or `webpack.config.js`, as long as it's possible to build a working app by running `yarn build` or `npm run build`.
+Instalacja projektu sprowadza się do zainstalowania niezbędnych zależności za pomocą polecenia `yarn install` lub `npm install`.
 
-##### Submitting the task
+##### Praca nad projektem
 
-After finishing the task, run `npm pack` and send us back the resulting archive: `reflex-game-1.0.0.tgz`. Alternatively, just zip the contents of the project excluding `node_modules` and `dist` directories.
+Za pomocą komendy `yarn start` lub `npm start` uruchom serwer developerski, który będzie dostępny pod adresem [http://localhost:9000](http://localhost:9000).
+
+Plikiem wejściowym będzie plik `src/index.ts`, jednak jeśli preferujesz zwykły JavaScript, wystarczy zmienić nazwę pliku wejściowego na `src/index.js`. Również wszystkie importowane moduły możesz tworzyć w wersji TypeScript lub JavaScript (a nawet korzystać zarówno z jednych, jak i drugich).
+
+Pliki statyczne serwowane są z folderu `dist`, do którego z kolei automatycznie trafia zawartość folderu `src/static`. Oznacza to, że np. plik `src/static/style.css` będzie dostępny pod adresem [http://localhost:9000/style.css](http://localhost:9000/style.css).
+
+Możesz swobodnie modyfikować ustawienia projektu. Prosimy tylko, aby po skopiowaniu repozytorium oraz zainstalowaniu zależności projekt nadal można było uruchamiać poleceniem `yarn start` lub `npm start`.
