@@ -6,11 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Reflex</title>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-        <h1>Reflex Game</h1>
+        <div class="container align-items-center">
+            <div class="row col-sm-12">
+                <div class="game-info"><h1>Życia: 3</h1></div>
+                <div class="game-info"><h1>Punkty: 3</h1></div>
+                <div class="offset-sm-1"><h1>Reflex Game</h1></div>
+                <div class="offset-sm-2 game-info"><h1>Czas: 48sek</h1></div>
+            </div>
+            <div class=" col-sm-12 game-wrapper">
+                <div class="col-sm-6 offset-sm-3 game-area"></div>
+                <div class="wrapper">
+                    <div class="btn btn-primary col-sm-2">START</div>
+                    <div class="btn btn-primary col-sm-2">RESET</div>
+                </div>
+
+            </div>
+        </div>
         <script src="bundle.js"></script>
     </body>
 
