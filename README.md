@@ -16,10 +16,10 @@ Zadanie rekrutacyjne dla osób aplikujących na stanowisko Młodszy Programista 
 2)    Rozgrywka trwa 60 sekund lub do straty ostatniego życia (gracz ma trzy  „życia”)
 3)    Czas widoczny w prawym górnym rogu
 4)    Na środku gry wyświetlone są kwadraty(ilość podawana z parametru)
-5)    Co 2-3 sekundy losowo wybrany kwadrat zapala się na zielono
-6)    Kwadrat jest zapalony na zielono 0.8 sekundy i w tym czasie gracz musi go kliknąć
+5)    Co 3 sekundy losowo wybrany kwadrat zapala się na zielono
+6)    Kwadrat jest zapalony na zielono 2 sekundy i w tym czasie gracz musi go kliknąć
 7)    Jeśli graczowi uda się kliknąć zielony kwadrat dostaje 1 punkt
-8)    Gracz traci życie jeśli w trafi w inny kwadrat lub jeśli podświetlenie zielonego kwadratu zniknie po  0,8 sekundy. Pojawia się alert „straciłeś życie”
+8)    Gracz traci życie jeśli w trafi w inny kwadrat lub jeśli podświetlenie zielonego kwadratu zniknie po  2 sekundach. Pojawia się alert „straciłeś życie”
 9)    Grę można zresetować  - Wyzerowany zostaje licznik czasu  i punktów a licznik „życia” wraca do stanu początkowego (np. 3)
 
 ##### Rysunek poglądowy
