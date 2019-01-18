@@ -15,7 +15,7 @@ window.onload = () => {
     let gameWorking = false;
     let timerInterval;
     let points = 0;
-    let paintSquareInterwal;
+    // let paintSquareInterwal;
     let paintedSquare = false;
     let executed;
 
@@ -77,10 +77,10 @@ window.onload = () => {
 
     //draw game area
     function drawReactiveGameArea3(times) {
-        let repeatedString = '<div class="single-square col-sm-2">'+`${times}`+'</div>';
+        let repeatedString = '<div data-reflex="clickedSquare" id="' + (times) + '" class="single-square col-sm-2">'+`${times}`+'</div>';
         while (times < 23) {
             times++;
-            repeatedString += '<div class="single-square col-sm-2">'+`${times}`+'</div>';
+            repeatedString += '<div data-reflex="clickedSquare" id="' + (times) + '" class="single-square col-sm-2">'+`${times}`+'</div>';
         }
         return repeatedString;
     }
@@ -91,13 +91,19 @@ window.onload = () => {
         reflex = new Component('#app', {
             data: {
                 time: 10,
-                running: false
+                running: false,
+                lives: 5,
+                points: 0,
+                paintedSquare: false,
             },
             template: function (props) {
                 const template =
-                    '<div id="reflex">' +
-                    (props.time) +
-                    '</div>' +
+                    '<div class="row col-sm-12">' +
+                        '<div class="game-info" ><h1 id="lives">Życia: '+ (props.lives) +'</h1></div>'+
+                        '<div class="game-info" ><h1 id="points">Punkty: '+ (props.points) +'</h1></div>'+
+                        '<div class="offset-sm-1"><h1>Reflex Game</h1></div>'+
+                        '<div class="offset-sm-2 game-info" ><h1 id="timer">Pozostały czas: '+ (props.time) + ' sek</h1></div>'+
+                    '</div>'+
                     '<div class=" col-sm-12 game-wrapper">' +
                         '<div class="col-sm-6 offset-sm-3 game-area">'+
                             (drawReactiveGameArea3(0))+
@@ -129,15 +135,33 @@ window.onload = () => {
 
             // Update the timer and stop game if it reach 0
             reflex.data.time = reflex.data.time -1;
-            if(reflex.data.time>=1){
+            if(reflex.data.time>=1 && reflex.data.lives>0){
                 reflex.render();
             }else{
                 reflex.data.time = 0;
                 reflex.render()
                 clearInterval(timer)
-                alert('Koniec czasu! Przegrałeś!')
+                window.clearInterval(paintSquareInterwal)
+                alert('Koniec czasu!')
             }
         }, 1000);
+
+        paintSquareInterwal = window.setInterval(() => {
+            reflex.data.paintedSquare = false;
+            if(reflex.data.paintedSquare){
+                let selectColouredSquare = document.getElementsByClassName('selectedSquare')
+                console.log(selectColouredSquare, 'in if')
+                selectColouredSquare[0].classList.remove('selectedSquare')
+                reflex.data.paintedSquare = false;
+                reflex.data.lives--;
+                alert(`Nie kliknąłeś kwadratu! Zostało Ci ${reflex.data.paintedSquare} szans `)
+            }
+            const selectedSquareId = Math.floor(Math.random() * 24)
+            const selectedSquare = document.getElementById(`${selectedSquareId}`)
+            console.log(selectedSquare, 'in else')
+            selectedSquare.classList.add('selectedSquare')
+            reflex.data.paintedSquare = true;
+        }, 2000);
     };
 
     /**
@@ -146,6 +170,7 @@ window.onload = () => {
     const stop = function () {
         reflex.data.running = false;
         window.clearInterval(timer);
+        window.clearInterval(paintSquareInterwal)
         reflex.render();
     };
 
@@ -155,6 +180,37 @@ window.onload = () => {
     const reset = function () {
         reflex.data.time = 10;
         stop();
+    };
+
+    /**
+     * Function that paint random square
+     */
+    const selectReactiveSquare = () => {
+        if(!paintSquareInterwal){
+
+        }
+    };
+
+    /**
+     * On square click
+     */
+    const onReactiveSquareClick = () => {
+        let squareClicked = event.target;
+        if (squareClicked.classList.contains('selectedSquare')) {
+            squareClicked.classList.remove('selectedSquare')
+            reflex.data.paintedSquare = false;
+            reflex.data.points++;
+
+        }else{
+            reflex.data.lives--;
+            if(reflex.data.lives>0){
+                alert(`Zły kwadrat! Zostało Ci ${reflex.data.lives} szans `)
+            }
+            else{
+                stop();
+                return alert("Skończyły Ci się szanse! Przegrałeś!")
+            }
+        }
     };
 
     /**
@@ -169,6 +225,7 @@ window.onload = () => {
         // If it's the start button, start
         if (action === 'start') {
             start();
+            selectReactiveSquare();
             return;
         }
 
@@ -182,6 +239,10 @@ window.onload = () => {
         if (action === 'reset') {
             reset();
         }
+
+        if(action === 'clickedSquare'){
+            onReactiveSquareClick();
+        }
     };
 
 
@@ -193,105 +254,105 @@ window.onload = () => {
 
     //-----------------------Previous app code below for comparison
 
-  //draw game area
-    const drawGameArea = () => {
-        for(let i=0; i<squareNumbers; i++){
-           let singleSquare = document.createElement('div');
-           singleSquare.innerText = i;
-           singleSquare.classList.add('single-square', 'col-sm-2');
-           singleSquare.id = i;
-           singleSquare.onclick = onSquareClick;
-           gameArea[0].appendChild(singleSquare);
-        }
-    };
-
-    //start timer fn
-    const startTimer = (gameTimer = 20, lives=5) => {
-        if(!timerInterval){
-            timerInterval = setInterval(()=>{
-                lives = livesDisplayer.innerHTML.substr(-1);
-                if(gameTimer>=1 && lives>0){
-                    gameTimer -=1;
-                    timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
-                }else {
-                    clearInterval(timerInterval);
-                    clearInterval(paintSquareInterwal);
-                    return alert("Przegrałeś!")
-                }
-            },1000);
-        }
-    };
-
-    //selectRandomSquare fn
-    const selectSquare = () => {
-        if(!paintSquareInterwal){
-            paintSquareInterwal = setInterval(() => {
-                if(paintedSquare){
-                    let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-                    selectColouredSquare[0].classList.remove('selectedSquare')
-                    lives --;
-                    livesDisplayer.innerText = `Życia: ${lives}`;
-                    alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
-                }
-                const selectedSquareId = Math.floor(Math.random() * 24)
-                const selectedSquare = document.getElementById(`${selectedSquareId}`)
-                selectedSquare.classList.add('selectedSquare')
-                paintedSquare = true;
-            }, 2000);
-        }
-    };
-
-    //button clicked
-    const onSquareClick = () => {
-        let squareClicked = event.target;
-        if (squareClicked.classList.contains('selectedSquare')) {
-            squareClicked.classList.remove('selectedSquare')
-            paintedSquare = false;
-            points++;
-            pointsDisplayer.innerText = `Punkty: ${points}`;
-        }else{
-            lives = livesDisplayer.innerHTML.substr(-1);
-            lives --;
-            if(lives>0){
-                livesDisplayer.innerText = `Życia: ${lives}`;
-                alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
-            }
-            else{
-                clearInterval(timerInterval);
-                clearInterval(paintSquareInterwal);
-                return alert("Przegrałeś")
-            }
-        }
-    };
-
-    //start game fn
-    const startGame = () => {
-        startTimer();
-        selectSquare();
-    };
-
-    //start game btn
-    startButton.onclick = startGame;
-
-    //restart game btn
-    stopButton.onclick = () => {
-        clearInterval(timerInterval);
-        clearInterval(paintSquareInterwal);
-        timerInterval = undefined;
-        paintSquareInterwal = undefined;
-        if(paintedSquare){
-            let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-            selectColouredSquare[0].classList.remove('selectedSquare')
-            paintedSquare = false;
-        }
-        gameTimer = 20;
-        timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
-        lives = 5;
-        livesDisplayer.innerText = `Życia: ${lives}`;
-        points = 0;
-        pointsDisplayer.innerText = `Punkty: ${points}`;
-        gameWorking = false;
-    };
-
-    drawGameArea();
+  // //draw game area
+  //   const drawGameArea = () => {
+  //       for(let i=0; i<squareNumbers; i++){
+  //          let singleSquare = document.createElement('div');
+  //          singleSquare.innerText = i;
+  //          singleSquare.classList.add('single-square', 'col-sm-2');
+  //          singleSquare.id = i;
+  //          singleSquare.onclick = onSquareClick;
+  //          gameArea[0].appendChild(singleSquare);
+  //       }
+  //   };
+  //
+  //   //start timer fn
+  //   const startTimer = (gameTimer = 20, lives=5) => {
+  //       if(!timerInterval){
+  //           timerInterval = setInterval(()=>{
+  //               lives = livesDisplayer.innerHTML.substr(-1);
+  //               if(gameTimer>=1 && lives>0){
+  //                   gameTimer -=1;
+  //                   timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
+  //               }else {
+  //                   clearInterval(timerInterval);
+  //                   clearInterval(paintSquareInterwal);
+  //                   return alert("Przegrałeś!")
+  //               }
+  //           },1000);
+  //       }
+  //   };
+  //
+  //   //selectRandomSquare fn
+  //   const selectSquare = () => {
+  //       if(!paintSquareInterwal){
+  //           paintSquareInterwal = setInterval(() => {
+  //               if(paintedSquare){
+  //                   let selectColouredSquare = document.getElementsByClassName('selectedSquare')
+  //                   selectColouredSquare[0].classList.remove('selectedSquare')
+  //                   lives --;
+  //                   livesDisplayer.innerText = `Życia: ${lives}`;
+  //                   alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
+  //               }
+  //               const selectedSquareId = Math.floor(Math.random() * 24)
+  //               const selectedSquare = document.getElementById(`${selectedSquareId}`)
+  //               selectedSquare.classList.add('selectedSquare')
+  //               paintedSquare = true;
+  //           }, 2000);
+  //       }
+  //   };
+  //
+  //   //button clicked
+  //   const onSquareClick = () => {
+  //       let squareClicked = event.target;
+  //       if (squareClicked.classList.contains('selectedSquare')) {
+  //           squareClicked.classList.remove('selectedSquare')
+  //           paintedSquare = false;
+  //           points++;
+  //           pointsDisplayer.innerText = `Punkty: ${points}`;
+  //       }else{
+  //           lives = livesDisplayer.innerHTML.substr(-1);
+  //           lives --;
+  //           if(lives>0){
+  //               livesDisplayer.innerText = `Życia: ${lives}`;
+  //               alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
+  //           }
+  //           else{
+  //               clearInterval(timerInterval);
+  //               clearInterval(paintSquareInterwal);
+  //               return alert("Przegrałeś")
+  //           }
+  //       }
+  //   };
+  //
+  //   //start game fn
+  //   const startGame = () => {
+  //       startTimer();
+  //       selectSquare();
+  //   };
+  //
+  //   //start game btn
+  //   startButton.onclick = startGame;
+  //
+  //   //restart game btn
+  //   stopButton.onclick = () => {
+  //       clearInterval(timerInterval);
+  //       clearInterval(paintSquareInterwal);
+  //       timerInterval = undefined;
+  //       paintSquareInterwal = undefined;
+  //       if(paintedSquare){
+  //           let selectColouredSquare = document.getElementsByClassName('selectedSquare')
+  //           selectColouredSquare[0].classList.remove('selectedSquare')
+  //           paintedSquare = false;
+  //       }
+  //       gameTimer = 20;
+  //       timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
+  //       lives = 5;
+  //       livesDisplayer.innerText = `Życia: ${lives}`;
+  //       points = 0;
+  //       pointsDisplayer.innerText = `Punkty: ${points}`;
+  //       gameWorking = false;
+  //   };
+  //
+  //   drawGameArea();
 };
