@@ -15,7 +15,7 @@ window.onload = () => {
     let gameWorking = false;
     let timerInterval;
     let points = 0;
-    // let paintSquareInterwal;
+    let paintSquareInterwal;
     let paintedSquare = false;
     let executed;
 
@@ -99,18 +99,18 @@ window.onload = () => {
             template: function (props) {
                 const template =
                     '<div class="row col-sm-12">' +
-                        '<div class="game-info" ><h1 id="lives">Życia: '+ (props.lives) +'</h1></div>'+
+                        '<div class="game-info" ><h1 id="lives">Szanse: '+ (props.lives) +'</h1></div>'+
                         '<div class="game-info" ><h1 id="points">Punkty: '+ (props.points) +'</h1></div>'+
-                        '<div class="offset-sm-1"><h1>Reflex Game</h1></div>'+
-                        '<div class="offset-sm-2 game-info" ><h1 id="timer">Pozostały czas: '+ (props.time) + ' sek</h1></div>'+
+                        '<div class="title"><h1>Reflex Game</h1></div>'+
+                        '<div id="clock"></div>' +
                     '</div>'+
                     '<div class=" col-sm-12 game-wrapper">' +
-                        '<div class="col-sm-6 offset-sm-3 game-area">'+
+                        '<div class="col-sm-9 col-md-6 offset-sm-3 game-area">'+
                             (drawReactiveGameArea3(0))+
                         '</div>'+
                         '<div class="wrapper">' +
                             '<button class="btn btn-primary col-sm-2" data-reflex="' + (props.running ? 'stop' : 'start') + '">' + (props.running ? 'Stop' : 'Start') + '</button>' +
-                            '<button class="btn btn-primary col-sm-2" data-reflex="reset">Reset</button>' +
+                            '<button id="last" class="btn btn-primary col-sm-2" data-reflex="reset">Reset</button>' +
                         '</div>'
                     '</div>';
 
@@ -118,9 +118,21 @@ window.onload = () => {
             }
         });
 
+        clock = new Component('#clock', {
+            data:{
+                time: 10,
+            },
+            template: function (props) {
+                const template =
+                    '<div class="offset-sm-2 game-info" ><h1 id="timer">Pozostały czas: '+ (props.time) + ' sek</h1></div>';
+
+                return template;
+            }
+        });
+
         // Render the reflex into the DOM
         reflex.render();
-
+        clock.render();
     };
 
 
@@ -128,18 +140,19 @@ window.onload = () => {
 
         // Render immediately
         reflex.data.running = true;
-        reflex.render();
+        reflex.render()
+        clock.render();
 
         // Start the timer
         timer = window.setInterval(function () {
 
             // Update the timer and stop game if it reach 0
-            reflex.data.time = reflex.data.time -1;
-            if(reflex.data.time>=1 && reflex.data.lives>0){
-                reflex.render();
+            clock.data.time = clock.data.time -1;
+            if(clock.data.time>=1 && reflex.data.lives>0){
+                clock.render();
             }else{
-                reflex.data.time = 0;
-                reflex.render()
+                clock.data.time = 0;
+                clock.render()
                 clearInterval(timer)
                 window.clearInterval(paintSquareInterwal)
                 alert('Koniec czasu!')
@@ -147,18 +160,16 @@ window.onload = () => {
         }, 1000);
 
         paintSquareInterwal = window.setInterval(() => {
-            reflex.data.paintedSquare = false;
             if(reflex.data.paintedSquare){
                 let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-                console.log(selectColouredSquare, 'in if')
                 selectColouredSquare[0].classList.remove('selectedSquare')
                 reflex.data.paintedSquare = false;
                 reflex.data.lives--;
-                alert(`Nie kliknąłeś kwadratu! Zostało Ci ${reflex.data.paintedSquare} szans `)
+                alert(`Nie kliknąłeś kwadratu! Zostało Ci ${reflex.data.lives} szans `)
+                clock.render()
             }
             const selectedSquareId = Math.floor(Math.random() * 24)
             const selectedSquare = document.getElementById(`${selectedSquareId}`)
-            console.log(selectedSquare, 'in else')
             selectedSquare.classList.add('selectedSquare')
             reflex.data.paintedSquare = true;
         }, 2000);
@@ -169,42 +180,47 @@ window.onload = () => {
      */
     const stop = function () {
         reflex.data.running = false;
+        reflex.data.paintedSquare = false;
         window.clearInterval(timer);
+        if(!paintSquareInterwal) return;
         window.clearInterval(paintSquareInterwal)
-        reflex.render();
+        reflex.render()
+        clock.render()
+
     };
 
     /**
      * Reset the timer
      */
     const reset = function () {
-        reflex.data.time = 10;
+        clock.data.time = 10;
+        reflex.data.lives = 5;
+        reflex.data.points = 0;
+        reflex.render();
+        clock.render();
         stop();
     };
 
-    /**
-     * Function that paint random square
-     */
-    const selectReactiveSquare = () => {
-        if(!paintSquareInterwal){
-
-        }
-    };
 
     /**
      * On square click
      */
     const onReactiveSquareClick = () => {
+        if(!reflex.data.running)return;
         let squareClicked = event.target;
         if (squareClicked.classList.contains('selectedSquare')) {
             squareClicked.classList.remove('selectedSquare')
             reflex.data.paintedSquare = false;
             reflex.data.points++;
+            reflex.render();
+            clock.render();
 
         }else{
             reflex.data.lives--;
             if(reflex.data.lives>0){
                 alert(`Zły kwadrat! Zostało Ci ${reflex.data.lives} szans `)
+                reflex.render();
+                clock.render();
             }
             else{
                 stop();
@@ -225,7 +241,6 @@ window.onload = () => {
         // If it's the start button, start
         if (action === 'start') {
             start();
-            selectReactiveSquare();
             return;
         }
 
@@ -249,110 +264,8 @@ window.onload = () => {
 // Setup the app
     setup();
 
+
 // Listen for clicks
     document.addEventListener('click', clickHandler, false);
 
-    //-----------------------Previous app code below for comparison
-
-  // //draw game area
-  //   const drawGameArea = () => {
-  //       for(let i=0; i<squareNumbers; i++){
-  //          let singleSquare = document.createElement('div');
-  //          singleSquare.innerText = i;
-  //          singleSquare.classList.add('single-square', 'col-sm-2');
-  //          singleSquare.id = i;
-  //          singleSquare.onclick = onSquareClick;
-  //          gameArea[0].appendChild(singleSquare);
-  //       }
-  //   };
-  //
-  //   //start timer fn
-  //   const startTimer = (gameTimer = 20, lives=5) => {
-  //       if(!timerInterval){
-  //           timerInterval = setInterval(()=>{
-  //               lives = livesDisplayer.innerHTML.substr(-1);
-  //               if(gameTimer>=1 && lives>0){
-  //                   gameTimer -=1;
-  //                   timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
-  //               }else {
-  //                   clearInterval(timerInterval);
-  //                   clearInterval(paintSquareInterwal);
-  //                   return alert("Przegrałeś!")
-  //               }
-  //           },1000);
-  //       }
-  //   };
-  //
-  //   //selectRandomSquare fn
-  //   const selectSquare = () => {
-  //       if(!paintSquareInterwal){
-  //           paintSquareInterwal = setInterval(() => {
-  //               if(paintedSquare){
-  //                   let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-  //                   selectColouredSquare[0].classList.remove('selectedSquare')
-  //                   lives --;
-  //                   livesDisplayer.innerText = `Życia: ${lives}`;
-  //                   alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
-  //               }
-  //               const selectedSquareId = Math.floor(Math.random() * 24)
-  //               const selectedSquare = document.getElementById(`${selectedSquareId}`)
-  //               selectedSquare.classList.add('selectedSquare')
-  //               paintedSquare = true;
-  //           }, 2000);
-  //       }
-  //   };
-  //
-  //   //button clicked
-  //   const onSquareClick = () => {
-  //       let squareClicked = event.target;
-  //       if (squareClicked.classList.contains('selectedSquare')) {
-  //           squareClicked.classList.remove('selectedSquare')
-  //           paintedSquare = false;
-  //           points++;
-  //           pointsDisplayer.innerText = `Punkty: ${points}`;
-  //       }else{
-  //           lives = livesDisplayer.innerHTML.substr(-1);
-  //           lives --;
-  //           if(lives>0){
-  //               livesDisplayer.innerText = `Życia: ${lives}`;
-  //               alert(`Straciłeś życie. Zostało Ci ${lives} szans `)
-  //           }
-  //           else{
-  //               clearInterval(timerInterval);
-  //               clearInterval(paintSquareInterwal);
-  //               return alert("Przegrałeś")
-  //           }
-  //       }
-  //   };
-  //
-  //   //start game fn
-  //   const startGame = () => {
-  //       startTimer();
-  //       selectSquare();
-  //   };
-  //
-  //   //start game btn
-  //   startButton.onclick = startGame;
-  //
-  //   //restart game btn
-  //   stopButton.onclick = () => {
-  //       clearInterval(timerInterval);
-  //       clearInterval(paintSquareInterwal);
-  //       timerInterval = undefined;
-  //       paintSquareInterwal = undefined;
-  //       if(paintedSquare){
-  //           let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-  //           selectColouredSquare[0].classList.remove('selectedSquare')
-  //           paintedSquare = false;
-  //       }
-  //       gameTimer = 20;
-  //       timerDisplayer.innerText = `Pozostały czas: ${gameTimer} sek`;
-  //       lives = 5;
-  //       livesDisplayer.innerText = `Życia: ${lives}`;
-  //       points = 0;
-  //       pointsDisplayer.innerText = `Punkty: ${points}`;
-  //       gameWorking = false;
-  //   };
-  //
-  //   drawGameArea();
 };

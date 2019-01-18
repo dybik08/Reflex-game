@@ -16,9 +16,6 @@ div > h1{
 .game-area {
     margin: 20px auto;
 
-    /*height: 66vh;*/
-    /*width: 75vw;*/
-    /*max-width: 826.75px;*/
     overflow: hidden;
 }
 
@@ -64,5 +61,25 @@ div > h1{
 
 .selectedSquare {
     background-color: gold !important;
+}
+
+.title {
+    margin-left: 4%;
+}
+
+#last{
+    margin-left: 1%;
+    margin-right: 3%;
+
+}
+@media(min-width: 992px)  {
+    #last {
+        margin-right: 7%;
+    }
+}
+@media(min-width: 1200px)  {
+    #last {
+        margin-right: 8.3%;
+    }
 }
 
