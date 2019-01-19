@@ -1,6 +1,6 @@
 
 div > h1{
-    padding-right: 10px;
+    padding: 10px;
     font-size: 1.5rem;
 }
 
@@ -45,6 +45,14 @@ div > h1{
     margin-left: 20px;
 }
 
+#clock{
+    border: solid 1px black;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    text-align: center;
+}
+
 .row {
     margin: 0 auto;
     max-width: 826.75px;
@@ -52,6 +60,9 @@ div > h1{
 
 .single-square{
     padding: 0;
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
 }
 
 .wrapper {
@@ -72,14 +83,93 @@ div > h1{
     margin-right: 3%;
 
 }
-@media(min-width: 992px)  {
-    #last {
-        margin-right: 7%;
+#clock .offset-sm-2{
+    width: inherit;
+}
+#timer{
+    width: inherit;
+}
+@media(min-width: 450px) and (max-width: 575px){
+    .single-square {
+        max-width: 19%;
     }
 }
-@media(min-width: 1200px)  {
-    #last {
-        margin-right: 8.3%;
+@media(max-width: 767px){
+
+    .btn {
+        -ms-flex: 0 0 40%;
+        flex: 0 0 40%;
+        max-width: 40%;
+    }
+    #last{
+        margin-left: 1%;
+        margin-right: 5%;
+
+    }
+    .title{
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+        font-size: 2rem;
+    }
+    .title > h1 {
+        font-size: 2rem;
+    }
+    .game-info{
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        text-align: center;
+        margin-left: 0;
+    }
+    #clock {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+        margin: 5px;
+    }
+}
+@media(min-width: 768px){
+    div > h1 {
+        font-size: 1rem;
+        text-align: center;
+        line-height: 10px;
+        margin: 0;
+    }
+    #clock{
+        max-width: 30%;
+    }
+    .title{
+        margin: 0 7%;
+    }
+    .row{
+        margin-bottom: 5px;
+    }
+    .title > h1 {
+        font-size: 21px;
+    }
+}
+
+@media(min-width: 768px) and (max-width: 992px){
+    .single-square {
+        max-width: 19%;
+    }
+}
+
+@media(min-width: 992px)  {
+    #clock{
+        border: solid 1px black;
+    }
+    div > h1 {
+        font-size: 20px;
+    }
+    .title {
+        margin: 0 5%;
+    }
+    .title > h1 {
+        font-size: 2rem;
     }
 }
 
