@@ -1,7 +1,7 @@
 # Reflex game!
 ## Challenge yourself and check if you are fast enough!
 
-###Usage & Installation
+### Usage & Installation
 Clone repository
 
 - Install dependencies via npm install command in terminal window
