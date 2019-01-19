@@ -5,29 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reflex</title>
+    <title>Reflex Game</title>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     </head>
 
-    <body>
-        <div class="container align-items-center">
-            <div class="row col-sm-12">
-                <div class="game-info" ><h1 id="lives">Życia: 3</h1></div>
-                <div class="game-info" ><h1 id="points">Punkty: 0</h1></div>
-                <div class="offset-sm-1"><h1>Reflex Game</h1></div>
-                <div class="offset-sm-2 game-info" ><h1 id="timer">Pozostały czas: 60 sek</h1></div>
-            </div>
-            <div class=" col-sm-12 game-wrapper">
-                <div class="col-sm-6 offset-sm-3 game-area"></div>
-                <div class="wrapper">
-                    <button type="button" class="btn btn-primary col-sm-2" id="startBtn">START GAME</button>
-                    <button type="button" class="btn btn-primary col-sm-2" id="stopBtn">RESET GAME</button>
-                </div>
-
-            </div>
-        </div>
+    <body onresize="reflex.render()">
+        <div class="container" id="app">Loading..</div>
         <script src="bundle.js"></script>
     </body>
 
