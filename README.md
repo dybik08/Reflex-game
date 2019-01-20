@@ -10,5 +10,5 @@ Clone repository
 
 - Game client is available at localhost:9000
 
-### If you like the game and found my code usefull, leave a star!
+### If you like the game and found my code useful, leave a star!
 Thanks and enjoy!

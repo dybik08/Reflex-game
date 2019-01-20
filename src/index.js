@@ -132,6 +132,7 @@ window.onload = () => {
         reflex.render()
         clock.render();
 
+        if(reflex.data.lives === 0) return reset();
         // Start the timer
         timer = window.setInterval(function () {
 
