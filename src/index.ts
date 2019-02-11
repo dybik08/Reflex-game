@@ -1,14 +1,23 @@
 window.onload = () => {
     //init variables
-    let paintSquareInterwal;
+    let paintSquareInterwal: number;
+    let clock;
+    let reflex;
+    let timer;
+
 
 //--------------------------------------
+    interface ComponentData {
+        data: object | null,
+        template: object | null
+    }
+
     const Component = (function () {
 
         'use strict';
 
 
-        const Component = function (elem, options) {
+        const Component = function (elem, options: ComponentData): void {
             if (!elem) throw 'You did not provide an element to make into a component.';
             this.elem = elem;
             this.data = options ? options.data : null;
@@ -16,14 +25,14 @@ window.onload = () => {
         };
 
         // Sanitization for safety reasons
-        Component.sanitize = function (str) {
+        Component.sanitize = function (str): string {
             const temp = document.createElement('div');
             temp.textContent = str;
             return temp.innerHTML;
         };
 
         // Component's render function
-        Component.prototype.render = function () {
+        Component.prototype.render = function (): object {
 
             // Make sure there's a template
             if (!this.template) throw 'No template was provided.';
@@ -42,7 +51,7 @@ window.onload = () => {
             elem.innerHTML = template;
 
             // Dispatch a render event
-            if (typeof window.CustomEvent === 'function') {
+            if (typeof window.event === 'function') {
                 const event = new CustomEvent('render', {
                     bubbles: true
                 });
@@ -59,11 +68,14 @@ window.onload = () => {
     })();
 
     // Draw game area
-    function drawReactiveGameArea(maxSquares) {
-        let iterator = 0;
-        if(window.innerWidth<576) maxSquares=15;
-        if(window.innerWidth>=992) maxSquares=24;
-        let repeatedString = '<div data-reflex="clickedSquare" id="' + (iterator) + '" class="single-square col-sm-2">'+`${iterator}`+'</div>';
+    function drawReactiveGameArea(maxSquares): string {
+        let iterator: number = 0;
+
+        if(window.innerWidth < 576) maxSquares = 15;
+        if(window.innerWidth >= 992) maxSquares = 24;
+
+        let repeatedString: string = '<div data-reflex="clickedSquare" id="' + (iterator) + '" class="single-square col-sm-2">'+`${iterator}`+'</div>';
+
         while (iterator < maxSquares) {
             iterator++;
             repeatedString += '<div data-reflex="clickedSquare" id="' + (iterator) + '" class="single-square col-sm-2">'+`${iterator}`+'</div>';
@@ -81,7 +93,7 @@ window.onload = () => {
                 points: 0,
                 paintedSquare: false,
             },
-            template: function (props) {
+            template: function (props: any): string {
                 const template =
                     '<div class="row col-sm-12">' +
                         '<div class="game-info" ><h1 id="lives">Szanse: '+ (props.lives) +'</h1></div>'+
@@ -96,7 +108,7 @@ window.onload = () => {
                         '<div class="wrapper">' +
                             '<button class="btn btn-primary col-sm-2" data-reflex="' + (props.running ? 'stop' : 'start') + '">' + (props.running ? 'Stop' : 'Start') + '</button>' +
                             '<button id="last" class="btn btn-primary col-sm-2" data-reflex="reset">Reset</button>' +
-                        '</div>'
+                        '</div>';
                     '</div>';
 
                 return template;
@@ -105,10 +117,10 @@ window.onload = () => {
 
         // Create clock component.
         clock = new Component('#clock', {
-            data:{
+            data: {
                 time: 60,
             },
-            template: function (props) {
+            template: function (props: any): string {
                 const template =
                     '<div><h1 id="timer">Pozostały czas: '+ (props.time) + ' sek</h1></div>';
 
@@ -129,22 +141,27 @@ window.onload = () => {
 
         // Render immediately
         reflex.data.running = true;
-        reflex.render()
+        reflex.render();
+
         clock.render();
 
         if(reflex.data.lives === 0) return reset();
+
         // Start the timer
         timer = window.setInterval(function () {
 
             // Update the timer and stop game if it reach 0
             clock.data.time = clock.data.time -1;
+
             if(clock.data.time>=1 && reflex.data.lives>0){
                 clock.render();
             }else{
                 clock.data.time = 0;
-                clock.render()
-                clearInterval(timer)
-                window.clearInterval(paintSquareInterwal)
+                clock.render();
+
+                clearInterval(timer);
+                window.clearInterval(paintSquareInterwal);
+
                 alert('Koniec gry!')
             }
         }, 1000);
@@ -154,20 +171,25 @@ window.onload = () => {
             let maxSquares = 24;
             if(window.innerWidth<576) maxSquares =10;
             if(window.innerWidth>=992) maxSquares=25;
-            const selectedSquareId = Math.floor(Math.random() * maxSquares)
-            const selectedSquare = document.getElementById(`${selectedSquareId}`)
-            selectedSquare.classList.add('selectedSquare')
+            const selectedSquareId = Math.floor(Math.random() * maxSquares);
+            const selectedSquare = document.getElementById(`${selectedSquareId}`);
+            selectedSquare.classList.add('selectedSquare');
             reflex.data.paintedSquare = true;
 
             // Check if square wasn't clicked in 2 sec
             if(reflex.data.paintedSquare && clock.data.time>2){
                 window.setTimeout(function () {
                     if(!document.getElementsByClassName('selectedSquare')[0]) return;
-                    let selectColouredSquare = document.getElementsByClassName('selectedSquare')
-                    selectColouredSquare[0].classList.remove('selectedSquare')
+
+                    let selectColouredSquare = document.getElementsByClassName('selectedSquare');
+
+                    selectColouredSquare[0].classList.remove('selectedSquare');
+
                     reflex.data.paintedSquare = false;
                     reflex.data.lives--;
-                    alert(`Nie kliknąłeś kwadratu! Zostało Ci ${reflex.data.lives} szans `)
+
+                    alert(`Nie kliknąłeś kwadratu! Zostało Ci ${reflex.data.lives} szans `);
+
                     reflex.render();
                     clock.render();
                 },2000)
@@ -178,21 +200,24 @@ window.onload = () => {
     /**
      * Stop the game
      */
-    const stop = function () {
+    const stop = function (): void {
         reflex.data.running = false;
         reflex.data.paintedSquare = false;
-        window.clearInterval(timer);
-        if(!paintSquareInterwal) return;
-        window.clearInterval(paintSquareInterwal)
-        reflex.render()
-        clock.render()
 
+        window.clearInterval(timer);
+
+        if(!paintSquareInterwal) return;
+
+        window.clearInterval(paintSquareInterwal);
+
+        reflex.render();
+        clock.render()
     };
 
     /**
      * Reset the game
      */
-    const reset = function () {
+    const reset = function (): void {
         clock.data.time = 60;
         reflex.data.lives = 3;
         reflex.data.points = 0;
@@ -205,14 +230,15 @@ window.onload = () => {
     /**
      * On square click
      */
-    const onReactiveSquareClick = () => {
+    const onReactiveSquareClick = (): void => {
         // Disable onSquareClick if game isn't running
         if(!reflex.data.running)return;
 
         // Check square that was clicked
-        let squareClicked = event.target;
+        let squareClicked: any = event.target;
+
         if (squareClicked.classList.contains('selectedSquare')) {
-            squareClicked.classList.remove('selectedSquare')
+            squareClicked.classList.remove('selectedSquare');
             reflex.data.paintedSquare = false;
             reflex.data.points++;
             reflex.render();
@@ -221,12 +247,12 @@ window.onload = () => {
         // If wrong square was clicked
         }else{
             reflex.data.lives--;
+
             if(reflex.data.lives>0){
-                alert(`Zły kwadrat! Zostało Ci ${reflex.data.lives} szans `)
+                alert(`Zły kwadrat! Zostało Ci ${reflex.data.lives} szans `);
                 reflex.render();
                 clock.render();
-            }
-            else{
+            } else {
                 stop();
                 return alert("Skończyły Ci się szanse! Przegrałeś!")
             }
@@ -236,9 +262,10 @@ window.onload = () => {
     /**
      * Handle click events
      */
-    const clickHandler = function (event) {
+    const clickHandler = function (event): void {
         // Check if a reflex action button was clicked
         const action = event.target.getAttribute('data-reflex');
+
         if (!action) return;
 
         // If it's the start button, start
